@@ -12,22 +12,31 @@
 #include <stdlib.h>
 #include <wchar.h>
 
-typedef		intmax_t		imax;
-typedef		uintmax_t		umax;
+#define		extinl		extern inline
 
-typedef		int_fast32_t	i32;
-typedef		uint_fast32_t	u32;
+#define		imax		intmax_t
+#define		umax		uintmax_t
+
+#define		cumax		const 		uintmax_t
+
+#define		i32			int_fast32_t
+#define		u32			uint_fast32_t
+
+#define		ri32		register	int_fast32_t
+#define		ru32		register	uint_fast32_t
+#define		ci32		const		int_fast32_t
+#define		cu32		const		uint_fast32_t
 
 /*
  * Lista de Funções
  */
 
-void	 Swap		(imax*, u32, u32);
-void	 Copy		(imax*, imax*, u32);
-void	 Print		(wchar_t*, imax*, u32, umax);
+extinl void	 Swap		(imax*, cu32, cu32);
+extinl void	 Copy		(imax*, imax*, cu32);
+extinl void	 Print		(const wchar_t*, imax*, cu32, cumax);
 
-void	 Insertion	(imax*, u32, umax*);
-void	 Quick		(imax*, i32, i32, umax*);
+void		 Insertion	(imax*, cu32, umax*);
+void		 Quick		(imax*, ci32, ci32, umax*);
 
 /*
  * Função de Troca - Θ(1) = O = Ω
@@ -35,7 +44,7 @@ void	 Quick		(imax*, i32, i32, umax*);
  * Troca os valores de V[i] e V[j].
  */
 
-void Swap(imax *V, u32 i, u32 j) {
+extinl void Swap(imax *V, cu32 i, cu32 j) {
 
 	imax Tmp;
 
@@ -51,9 +60,9 @@ void Swap(imax *V, u32 i, u32 j) {
  * Copia os elementos do vetor W para o vetor V.
  */
 
-void Copy(imax *V, imax *W, u32 N) {
+extinl void Copy(imax *V, imax *W, cu32 N) {
 
-	u32 i;
+	ru32  i;
 
 	for (i = 0; i < N; i++)
 		V[i] = W[i];
@@ -66,9 +75,9 @@ void Copy(imax *V, imax *W, u32 N) {
  * Imprime os elementos de um vetor V.
  */
 
-void Print(wchar_t *Name, imax *V, u32 N, umax C) {
+extinl void Print(const wchar_t *Name, imax *V, cu32 N, cumax C) {
 
-	u32 i;
+	ru32  i;
 
 	if (Name != NULL)
 		printf("%ls\n", Name);
@@ -87,9 +96,9 @@ void Print(wchar_t *Name, imax *V, u32 N, umax C) {
  * Retorna o número total de comparações por dereferência.
  */
 
-void Insertion(imax *V, u32 N, umax *C) {
+void Insertion(imax *V, cu32 N, umax *C) {
 
-	u32  i, j;
+	ru32  i, j;
 
 	for (i = 0; i < N; i++, (*C)++)
 		for (j = i; (j > 0) && (V[j] < V[j-1]); j--, (*C)++)
@@ -104,13 +113,14 @@ void Insertion(imax *V, u32 N, umax *C) {
  * Retorna o número total de comparações por dereferência.
  */
 
-void Quick(imax *V, i32 Start, i32 End, umax *C) {
+void Quick(imax *V, ci32 Start, ci32 End, umax *C) {
 
 	if (Start >= End)
 		return;
 
-	imax Pivot = V[Start];
-	i32  i, m  = Start;
+	imax  Pivot	= V[Start];
+	i32   m		= Start;
+	ri32  i;
 
 	for (i = (m + 1); i <= End; i++) {
 
@@ -136,7 +146,8 @@ int main(void) {
 
 	imax *I, *Q;
 	umax  C1 = 0, C2 = 0;
-	u32   N, i;
+	u32   N;
+	ru32  i;
 
 	scanf("%" SCNuFAST32, &N);
 

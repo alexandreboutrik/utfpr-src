@@ -9,44 +9,47 @@
 #include <stdio.h>
 #include <wchar.h>
 
-typedef		intmax_t		imax;
-typedef		int_fast16_t	i16;
+#define		imax		intmax_t
+#define		umax		uintmax_t
 
-typedef		uintmax_t		umax;
-typedef		uint_fast16_t	u16;
-typedef		uint_fast8_t	u8;
+#define		u16			uint_fast16_t
+#define		u8			uint_fast8_t
+
+#define		cimax		const intmax_t
+#define		cumax		const uintmax_t
+#define		cu16		const uint_fast16_t
 
 /*
  * Lista de Exercícios
  */
 
-imax	 Fatorial		(imax);					/* Ex 02 */
-imax	 Power_2		(imax);					/* Ex 05 */
-imax	 Fibonnaci		(imax);					/* Ex 07 */
-u16		 Digits			(imax);					/* Ex 08 */
+imax	 Fatorial		(cimax);				/* Ex 02 */
+imax	 Power_2		(cimax);				/* Ex 05 */
+imax	 Fibonnaci		(cimax);				/* Ex 07 */
+u16		 Digits			(cimax);				/* Ex 08 */
 
-void	 PrintIn_Digits	(imax);					/* Ex 09 */
-void	 Print_Digits	(imax);					/* Ex 10 */
-void	 Print_Bin		(imax);					/* Ex 11 */
+void	 PrintIn_Digits	(cimax);				/* Ex 09 */
+void	 Print_Digits	(cimax);				/* Ex 10 */
+void	 Print_Bin		(cimax);				/* Ex 11 */
 
-imax	 Pow			(imax, imax);			/* Ex 12 */
-imax	 Custom_Pow		(imax, imax);			/* Ex 13 */
-imax	 Sum			(imax*, u16);			/* Ex 14 */
-u8		 Linear_Search	(imax*, u16, imax);		/* Ex 15 */
-imax	 Biggest		(imax*, u16);			/* Ex 16 */
-u16		 StrLen			(wchar_t*);				/* Ex 17 */
-u8		 Palindrome		(imax*, u16);			/* Ex 18 */
+imax	 Pow			(cimax, cimax);			/* Ex 12 */
+imax	 Custom_Pow		(cimax, cimax);			/* Ex 13 */
+imax	 Sum			(imax*, cu16);			/* Ex 14 */
+u8		 Linear_Search	(imax*, cu16, cimax);	/* Ex 15 */
+imax	 Biggest		(imax*, cu16);			/* Ex 16 */
+u16		 StrLen			(const wchar_t*);		/* Ex 17 */
+u8		 Palindrome		(imax*, cu16);			/* Ex 18 */
 
-void	 Print_Inv		(imax*, u16);			/* Ex 19 */
+void	 Print_Inv		(imax*, cu16);			/* Ex 19 */
 
-imax	 Sum_Digits		(imax);					/* Sala de Aula */
+imax	 Sum_Digits		(cimax);				/* Sala de Aula */
 
 /*
  * Função Recursiva - Ex 02
  * Calcula o fatorial de um inteiro N.
  */
 
-imax Fatorial(imax N) {
+imax Fatorial(cimax N) {
 
 	if (N == 0)
 		return 1;
@@ -60,7 +63,7 @@ imax Fatorial(imax N) {
  * Retorna 2^N.
  */
 
-imax Power_2(imax N) {
+imax Power_2(cimax N) {
 
 	if (N == 0)
 		return 1;
@@ -74,7 +77,7 @@ imax Power_2(imax N) {
  * Retona o N-ésimo número da sequência de Fibonacci.
  */
 
-imax Fibonnaci(imax N) {
+imax Fibonnaci(cimax N) {
 
 	if (N == 0 || N == 1)
 		return N;
@@ -88,7 +91,7 @@ imax Fibonnaci(imax N) {
  * Retorna a quantidade de dígitos de um inteiro N.
  */
 
-u16 Digits(imax N) {
+u16 Digits(cimax N) {
 
 	if (N == 0)
 		return 0;
@@ -102,7 +105,7 @@ u16 Digits(imax N) {
  * Imprime os dígitos de um inteiro N da direita para a esquerda.
  */
 
-void PrintIn_Digits(imax N) {
+void PrintIn_Digits(cimax N) {
 
 	if (N == 0)
 		return;
@@ -118,7 +121,7 @@ void PrintIn_Digits(imax N) {
  * Imprime os dígitos de um inteiro N da esquerda para a direita.
  */
 
-void Print_Digits(imax N) {
+void Print_Digits(cimax N) {
 
 	if (N == 0)
 		return;
@@ -134,7 +137,7 @@ void Print_Digits(imax N) {
  * Imprime a representação binária de um inteiro N.
  */
 
-void Print_Bin(imax N) {
+void Print_Bin(cimax N) {
 
 	if (N == 0)
 		return;
@@ -150,7 +153,7 @@ void Print_Bin(imax N) {
  * Retorna X^K.
  */
 
-imax Pow(imax X, imax K) {
+imax Pow(cimax X, cimax K) {
 
 	if (K == 0)
 		return 1;
@@ -166,7 +169,7 @@ imax Pow(imax X, imax K) {
  *   X^K = X * X^(K-1)  <- se K for ímpar
  */
 
-imax Custom_Pow(imax X, imax K) {
+imax Custom_Pow(cimax X, cimax K) {
 
 	if (K == 0)
 		return 1;
@@ -183,7 +186,7 @@ imax Custom_Pow(imax X, imax K) {
  * Retorna a soma os elementos de um vetor V de tamanho N.
  */
 
-imax Sum(imax *V, u16 N) {
+imax Sum(imax *V, cu16 N) {
 
 	if (N == 0)
 		return 0;
@@ -198,7 +201,7 @@ imax Sum(imax *V, u16 N) {
  * contrário.
  */
 
-u8 Linear_Search(imax *V, u16 N, imax X) {
+u8 Linear_Search(imax *V, cu16 N, cimax X) {
 
 	if (N == 0)
 		return 0;
@@ -216,7 +219,7 @@ u8 Linear_Search(imax *V, u16 N, imax X) {
  * Retorna o maior elemento de um vetor V de tamanho N.
  */
 
-imax Biggest(imax *V, u16 N) {
+imax Biggest(imax *V, cu16 N) {
 
 	if (N == 1)
 		return V[0];
@@ -233,7 +236,7 @@ imax Biggest(imax *V, u16 N) {
  * Retorna a quantidade de letras de uma String.
  */
 
-u16 StrLen(wchar_t* String) {
+u16 StrLen(const wchar_t* String) {
 
 	if (String[0] == '\0')
 		return 0;
@@ -247,13 +250,15 @@ u16 StrLen(wchar_t* String) {
  * Retorna 1 se o vetor V é palíndrome, 0 caso contrário.
  */
 
-u8 Palindrome(imax *V, u16 N) {
+u8 Palindrome(imax *V, cu16 N) {
 
 	if (N == 0)
 		return 1;
 
 	if (V[0] == V[N-1])
 		return Palindrome(&(V[1]), N-2);
+
+	return 0;
 
 }
 
@@ -262,14 +267,14 @@ u8 Palindrome(imax *V, u16 N) {
  * Imprime os elementos do vetor V de tamanho N na ordem invertida.
  */
 
-void Print_Inv(imax *V, u16 N) {
+void Print_Inv(imax *V, cu16 N) {
 
 	if (N == 0)
 		return;
 
 	printf("%" PRIiMAX, V[N-1]);
 
-	return Print_Inv(&(V[0]), N-1);
+	Print_Inv(&(V[0]), N-1);
 
 }
 
@@ -278,7 +283,7 @@ void Print_Inv(imax *V, u16 N) {
  * Retorna a soma dos dígitos de um inteiro N.
  */
 
-imax Sum_Digits(imax N) {
+imax Sum_Digits(cimax N) {
 
 	if (N == 0)
 		return 0;

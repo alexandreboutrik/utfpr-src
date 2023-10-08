@@ -12,14 +12,24 @@
 #include <stdlib.h>
 #include <wchar.h>
 
-typedef		intmax_t			imax;
-typedef		int_fast8_t			i8;
+#define		imax		intmax_t
+#define		i32			int_fast32_t
+#define		i8			int_fast8_t
 
-typedef		uintmax_t			umax;
-typedef		uint_fast16_t		u16;
-typedef		uint_fast8_t		u8;
+#define		umax		uintmax_t
+#define		u16			uint_fast16_t
+#define		u8			uint_fast8_t
 
-typedef		float				f32;
+#define		cimax		const		intmax_t
+#define		cumax		const		uintmax_t
+
+#define		ri32		register	int_fast32_t
+#define		ru16		register	uint_fast16_t
+#define		cu16		const		uint_fast16_t
+#define		ru8			register	uint_fast8_t
+#define		cu8			const		uint_fast8_t
+
+#define		f32			float
 
 /*
  * Lista de Exercícios
@@ -27,13 +37,13 @@ typedef		float				f32;
 
 void	 HelloWorld		(void);					/* Ex 01 */
 
-u8		 Triangle		(umax, umax, umax);		/* Ex 02 */
+u8		 Triangle		(cumax, cumax, cumax);	/* Ex 02 */
 void	 Average		(void);					/* Ex 03 */
-i8		 Square			(u8);					/* Ex 04 */
-void	 Dynamic		(u16);					/* Ex 05 */
-u16		 StrLen			(wchar_t*);				/* Ex 07 */
+i8		 Square			(cu8);					/* Ex 04 */
+void	 Dynamic		(i32);					/* Ex 05 */
+u16		 StrLen			(const wchar_t*);		/* Ex 07 */
 
-u8		 Linear_Search	(imax*, u16, imax);		/* Ex 12 */
+u8		 Linear_Search	(imax*, cu16, cimax);	/* Ex 12 */
 
 /*
  * Exercício 01
@@ -50,7 +60,7 @@ void HelloWorld(void) {
  * A, B e C. Retorna 0 caso contrário.
  */
 
-u8 Triangle(umax A, umax B, umax C) {
+u8 Triangle(cumax A, cumax B, cumax C) {
 
 	if ((A < (B + C)) && (B < (A + C)) && (C < (A + B)))
 		return 1;
@@ -94,9 +104,9 @@ void Average(void) {
  * Se N for par, retorna -1 sinalizando um erro.
  */
 
-i8 Square(u8 N) {
+i8 Square(cu8 N) {
 
-	u8 l, c;
+	ru8 l, c;
 
 	if (N % 2 == 0)
 		return -1;
@@ -128,12 +138,12 @@ i8 Square(u8 N) {
  * Em seguida, imprima a soma dos elementos do vetor.
  */
 
-void Dynamic(u16 N) {
+void Dynamic(i32 N) {
 
 	imax *Vetor;
 	imax  Sum;
 
-	u16   i;
+	ri32   i;
 
 	if ((Vetor = (imax *) malloc(N * sizeof(imax))) == NULL)
 		err(errno, "malloc");
@@ -155,9 +165,9 @@ void Dynamic(u16 N) {
  * Retorna a quantidade de letras de uma String.
  */
 
-u16 StrLen(wchar_t* String) {
+u16 StrLen(const wchar_t* String) {
 
-	u16 i;
+	ru16 i;
 
 	for (i = 0; String[i] != '\0'; i++);
 
@@ -171,9 +181,9 @@ u16 StrLen(wchar_t* String) {
  * Retorna 0 caso contrário.
  */
 
-u8 Linear_Search(imax *V, u16 N, imax X) {
+u8 Linear_Search(imax *V, cu16 N, cimax X) {
 
-	u16 i;
+	ru16 i;
 
 	for (i = 0; i < N; i++)
 		if (V[i] == X)

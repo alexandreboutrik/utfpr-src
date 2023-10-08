@@ -12,31 +12,42 @@
 #include <stdlib.h>
 #include <wchar.h>
 
-typedef		intmax_t		imax;
-typedef		uintmax_t		umax;
+#define		extinl		extern inline
 
-typedef		int_fast32_t	i32;
-typedef		uint_fast32_t	u32;
+#define		imax		intmax_t
+#define		umax		uintmax_t
+
+#define		rimax		register	intmax_t
+#define		rumax		register	uintmax_t
+#define		cumax		const		uintmax_t
+
+#define		i32			int_fast32_t
+#define		u32			uint_fast32_t
+
+#define		ri32		register	int_fast32_t
+#define		ru32		register	uint_fast32_t
+#define		ci32		const		int_fast32_t
+#define		cu32		const		uint_fast32_t
 
 /*
  * Lista de Funções
  */
 
-void	 Swap		(imax*, u32, u32);
-void	 Copy		(imax*, imax*, u32);
-void	 Print		(wchar_t*, imax*, u32);
+extinl void	 Swap		(imax*, cu32, cu32);
+extinl void	 Copy		(imax*, imax*, cu32);
+extinl void	 Print		(const wchar_t*, imax*, cu32);
 
-void	 Bubble		(imax*, u32);
-void	 Selection	(imax*, u32);
-void	 Insertion	(imax*, u32);
+void		 Bubble		(imax*, u32);
+void		 Selection	(imax*, u32);
+void		 Insertion	(imax*, cu32);
 
-void	 Merge		(imax*, imax*, imax*, u32, u32);
-void	 Merge_Sort	(imax*, imax*, u32);	/* NOT WORKING */
-void	 Quick		(imax*, i32, i32);
+void		 Merge		(imax*, imax*, imax*, cu32, cu32);
+void		 Merge_Sort	(imax*, imax*, cu32);	/* NOT WORKING */
+void		 Quick		(imax*, ci32, ci32);
 
-void	 Counting	(imax*, u32, umax);
-void	 Bucket		(imax*, u32);			/* NOT WORKING */
-void	 Radix		(imax*, u32, umax);		/* NOT WORKING */
+void		 Counting	(imax*, u32, cumax);
+void		 Bucket		(imax*, cu32);			/* NOT WORKING */
+void		 Radix		(imax*, cu32, cumax);	/* NOT WORKING */
 
 /*
  * Função de Troca - Θ(1) = O = Ω
@@ -44,7 +55,7 @@ void	 Radix		(imax*, u32, umax);		/* NOT WORKING */
  * Troca os valores de V[i] e V[j].
  */
 
-void Swap(imax* V, u32 i, u32 j) {
+extinl void Swap(imax* V, cu32 i, cu32 j) {
 
 	imax Tmp;
 
@@ -60,9 +71,9 @@ void Swap(imax* V, u32 i, u32 j) {
  * Copia os elementos do vetor W para o vetor V.
  */
 
-void Copy(imax *V, imax *W, u32 N) {
+extinl void Copy(imax *V, imax *W, cu32 N) {
 
-	u32 i;
+	ru32 i;
 
 	for (i = 0; i < N; i++)
 		V[i] = W[i];
@@ -75,9 +86,9 @@ void Copy(imax *V, imax *W, u32 N) {
  * Função que imprime um vetor V.
  */
 
-void Print(wchar_t* Name, imax* V, u32 N) {
+extinl void Print(const wchar_t* Name, imax* V, cu32 N) {
 
-	u32 i;
+	ru32 i;
 
 	if (Name != NULL)
 		printf(" %ls:", Name);
@@ -96,9 +107,9 @@ void Print(wchar_t* Name, imax* V, u32 N) {
  * vetor.
  */
 
-void Bubble(imax* V, u32 N) {
+void Bubble(imax* V, cu32 N) {
 
-	u32 i, j;
+	ru32 i, j;
 
 	for (i = 0; i < N; i++)
 		for (j = 0; j < N; j++)
@@ -113,9 +124,9 @@ void Bubble(imax* V, u32 N) {
  * Encontra o menor elemento do vetor e coloca na posição inicial.
  */
 
-void Selection(imax* V, u32 N) {
+void Selection(imax* V, cu32 N) {
 
-	u32 i, j, p;
+	ru32 i, j, p;
 
 	for (i = 0; i < N; i++) {
 
@@ -135,9 +146,9 @@ void Selection(imax* V, u32 N) {
  * Empurra o elemento para trás até ficar ordenado.
  */
 
-void Insertion(imax* V, u32 N) {
+void Insertion(imax* V, cu32 N) {
 
-	u32 i, j;
+	ru32 i, j;
 
 	for (i = 0; i < N; i++)
 		for (j = i; (j > 0) && (V[j] < V[j-1]); j--)
@@ -151,9 +162,9 @@ void Insertion(imax* V, u32 N) {
  * Junta dois vetores já pré-ordenados.
  */
 
-void Merge(imax* R, imax* V, imax* W, u32 Nv, u32 Nw) {
+void Merge(imax* R, imax* V, imax* W, cu32 Nv, cu32 Nw) {
 
-	u32 i, j, k;
+	ru32 i, j, k;
 
 	for (i = 0, j = 0, k = 0; (i < Nv) && (j < Nw); k++) {
 
@@ -187,7 +198,7 @@ void Merge(imax* R, imax* V, imax* W, u32 Nv, u32 Nw) {
  * Utiliza o algoritmo merge para ordenar um vetor.
  */
 
-void Merge_Sort(imax* R, imax* V, u32 N) {
+void Merge_Sort(imax* R, imax* V, cu32 N) {
 
 	if (N == 1)
 		return;
@@ -195,7 +206,7 @@ void Merge_Sort(imax* R, imax* V, u32 N) {
 	Merge_Sort(&(R[0]), &(V[0]),   N/2);
 	Merge_Sort(&(R[0]), &(V[N/2]), N/2);
 
-	return Merge(&(R[0]), &(V[0]), &(V[N/2]), N/2, N/2);
+	Merge(&(R[0]), &(V[0]), &(V[N/2]), N/2, N/2);
 
 }
 
@@ -205,13 +216,14 @@ void Merge_Sort(imax* R, imax* V, u32 N) {
  * Utiliza o algoritmo de particionamento para ordenar um vetor.
  */
 
-void Quick(imax* V, i32 Start, i32 End) {
+void Quick(imax* V, ci32 Start, ci32 End) {
 
 	if (Start >= End)
 		return;
 
-	imax Pivot = V[Start];
-	u32 i, m  = Start;
+	imax Pivot	= V[Start];
+	u32  m		= Start;
+	ri32 i;
 
 	for (i = (m + 1); i <= End; i++) {
 
@@ -238,10 +250,11 @@ void Quick(imax* V, i32 Start, i32 End) {
  * de forma ordenada.
  */
 
-void Counting(imax *V, u32 N, umax M) {
+void Counting(imax *V, u32 N, cumax M) {
 
-	imax *C;
-	u32	  i, j;
+	imax  *C;
+	rumax  i;
+	rimax  j;
 
 	if ((C = (imax *) calloc(M+1, sizeof(imax))) == NULL)
 		err(errno, "calloc");
@@ -264,7 +277,7 @@ void Counting(imax *V, u32 N, umax M) {
  * reconstruir o vetor de forma ordenada.
  */
 
-void Bucket(imax *V, u32 N) {
+void Bucket(imax *V, cu32 N) {
 	(void) V; (void) N;
 }
 
@@ -274,7 +287,7 @@ void Bucket(imax *V, u32 N) {
  * Ordena um vetor por dígito significativo utilizando o Bucket sort.
  */
 
-void Radix(imax *V, u32 N, umax D) {
+void Radix(imax *V, cu32 N, cumax D) {
 	(void) V; (void) N; (void) D;
 }
 
@@ -294,7 +307,7 @@ int main(void) {
 
 	imax  Vo[]	 = { 1, 2, 3, 4, 5, 6, 1, 0, 8 };
 
-	u32  N		 = 9;
+	cu32  N		 = 9;
 	
 	imax *R;
 

@@ -8,10 +8,11 @@
 #include <stdint.h>
 #include <stdio.h>
 
-typedef		uintmax_t		umax;
-typedef		int_fast16_t	i16;
+#define		extinl		extern inline
 
-typedef		double			f64;
+#define		umax		uintmax_t
+#define		i16			int_fast16_t
+#define		f64			double
 
 typedef struct Block {
 
@@ -26,14 +27,14 @@ typedef struct Block {
  * Lista de funções
  */
 
-i16		 ReadInput			(void);
-void	 InitData			(Block*, Block*);
+extinl i16	 ReadInput			(void);
+void		 InitData			(Block*, Block*);
 
-void	 CalculateCollision	(Block*, Block *);
-void	 PrintNCollision	(umax);
+void		 CalculateCollision	(Block*, Block *);
+void		 PrintNCollision	(const umax);
 
 /* Lê um input do usuário para o valor 'd' */
-i16 ReadInput(void) {
+extinl i16 ReadInput(void) {
 
 	i16 Input;
 
@@ -79,7 +80,7 @@ void CalculateCollision(Block* B1, Block* B2) {
 /*
  * Imprime o valor do contador de colisões na tela
  */
-void PrintNCollision(umax count) {
+void PrintNCollision(const umax count) {
 
 	/* carriage return, retorna ao início da linha */
 	printf("\r");
@@ -96,7 +97,7 @@ int main(int argc, const char* argv[]) {
 	setlocale(LC_CTYPE, "");
 
 	/* Contador de colisões */
-	umax count;
+	register umax count;
 
 	/* Blocos */
 	Block B1, B2;
