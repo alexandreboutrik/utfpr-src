@@ -8,8 +8,6 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#define		extinl		extern inline
-
 #define		umax		uintmax_t
 #define		i16			int_fast16_t
 #define		f64			double
@@ -27,27 +25,28 @@ typedef struct Block {
  * Lista de funções
  */
 
-extinl i16	 ReadInput			(void);
-void		 InitData			(Block*, Block*);
+static inline i16	 ReadInput			(void);
+static void			 InitData			(Block*, Block*);
 
-void		 CalculateCollision	(Block*, Block *);
-void		 PrintNCollision	(const umax);
+static void			 CalculateCollision	(Block*, Block *);
+static void			 PrintNCollision	(const umax);
 
 /* Lê um input do usuário para o valor 'd' */
-extinl i16 ReadInput(void) {
-
+static inline i16 
+ReadInput(void)
+{
 	i16 Input;
 
 	printf("Digite o valor de d: ");
 	scanf("%" SCNiFAST16, &Input);
 
 	return Input;
-
 }
 
 /* Inicializa as structs */
-void InitData(Block* B1, Block* B2) {
-
+static void 
+InitData(Block* B1, Block* B2)
+{
 	B1->mass		=	1;		/* 1 Kg */
 	B1->v_initial	=	0;		/* está em repouso */
 
@@ -59,14 +58,14 @@ void InitData(Block* B1, Block* B2) {
 	 * o condicional do for
 	 */
 	B2->v_final	= 0; B1->v_final = 1;
-
 }
 
 /*
  * Calcula a velocidade dos dois blocos após a colisão
  */
-void CalculateCollision(Block* B1, Block* B2) {
-
+static void 
+CalculateCollision(Block* B1, Block* B2) 
+{
 	B1->v_final = (( (f64) B1->mass - (f64) B2->mass) * B1->v_initial +
 			(2 * (f64) B2->mass * B2->v_initial)) /
 			( (f64) B1->mass + (f64) B2->mass);
@@ -74,26 +73,27 @@ void CalculateCollision(Block* B1, Block* B2) {
 	B2->v_final = (( (f64) B2->mass - (f64) B1->mass) * B2->v_initial +
 			(2 * (f64) B1->mass * B1->v_initial)) /
 			( (f64) B1->mass + (f64) B2->mass);
-
 }
 
 /*
  * Imprime o valor do contador de colisões na tela
  */
-void PrintNCollision(const umax count) {
+static void 
+PrintNCollision(const umax count)
+{
 
 	/* carriage return, retorna ao início da linha */
 	printf("\r");
 
 	printf(" colisões: %" PRIuMAX " x 10^6", count);
-
 }
 
 /*
  * Trabalho de Física 1
  */
-int main(int argc, const char* argv[]) {
-
+int 
+main(int argc, const char* argv[])
+{
 	setlocale(LC_CTYPE, "");
 
 	/* Contador de colisões */
@@ -129,6 +129,5 @@ int main(int argc, const char* argv[]) {
 	printf("\rOcorreram %" PRIuMAX " colisões.\n", count);
 
 	return 0;
-
 }
 
