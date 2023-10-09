@@ -25,8 +25,8 @@
 
 #define		ri32		register	int_fast32_t
 #define		ru16		register	uint_fast16_t
-#define		cu16		const		uint_fast16_t
 #define		ru8			register	uint_fast8_t
+#define		cu16		const		uint_fast16_t
 #define		cu8			const		uint_fast8_t
 
 #define		f32			float

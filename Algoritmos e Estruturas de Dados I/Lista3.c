@@ -48,7 +48,7 @@ static void			 Bucket		(imax*, cu32);			/* NOT WORKING */
 static void			 Radix		(imax*, cu32, cumax);	/* NOT WORKING */
 
 /*
- * Função de Troca - Θ(1) = O = Ω
+ * Função de Troca - Θ(1)
  *  Swap
  * Troca os valores de V[i] e V[j].
  */
@@ -64,7 +64,7 @@ Swap(imax* V, cu32 i, cu32 j)
 }
 
 /*
- * Função de Cópia - Θ(1) = O = Ω
+ * Função de Cópia - Θ(1)
  *  Copy
  * Copia os elementos do vetor W para o vetor V.
  */
@@ -79,7 +79,7 @@ Copy(imax *V, imax *W, cu32 N)
 }
 
 /*
- * Função de Impressão - Θ(1) = O = Ω
+ * Função de Impressão - Θ(1)
  *  Print
  * Função que imprime um vetor V.
  */
@@ -100,7 +100,7 @@ Print(const wchar_t* Name, imax* V, cu32 N)
 
 /*
  * Função de Ordenação por comparação
- *  Bubble Sort - Θ(n²) = O = Ω, in-place, estável
+ *  Bubble Sort - Θ(n²), in-place, estável
  * Percorre o vetor para encontrar o maior elemento e coloca no final do
  * vetor.
  */
@@ -118,7 +118,7 @@ Bubble(imax* V, cu32 N)
 
 /*
  * Função de Ordenação por comparação
- *  Selection Sort - Θ(n²) = O = Ω, in-place
+ *  Selection Sort - Θ(n²), in-place
  * Encontra o menor elemento do vetor e coloca na posição inicial.
  */
 
@@ -140,7 +140,7 @@ Selection(imax* V, cu32 N)
 
 /*
  * Função de Ordenação por comparação
- *  Insertion Sort - O(n²) Ω(n) Θ(n²), in-place, estável
+ *  Insertion Sort - O(n²), melhor caso: O(n), in-place, estável
  * Empurra o elemento para trás até ficar ordenado.
  */
 
@@ -156,7 +156,7 @@ Insertion(imax* V, cu32 N)
 
 /*
  * Função de Ordenação por comparação
- *  Merge Algorithm - Θ(n) = O = Ω
+ *  Merge Algorithm - Θ(n)
  * Junta dois vetores já pré-ordenados.
  */
 
@@ -192,7 +192,7 @@ Merge(imax* R, imax* V, imax* W, cu32 Nv, cu32 Nw)
 
 /*
  * Função de Ordenação recursiva por comparação
- *  Merge Sort - Θ(n lg n) = O = Ω, estável
+ *  Merge Sort - Θ(n lg n), estável
  * Utiliza o algoritmo merge para ordenar um vetor.
  */
 
@@ -210,7 +210,7 @@ Merge_Sort(imax* R, imax* V, cu32 N)
 
 /*
  * Função de Ordenação recursiva por comparação
- *  Quick Sort - O(n lg n) Ω(n²) Θ(n lg n), in-place
+ *  Quick Sort - O(n lg n), pior caso: O(n²), in-place
  * Utiliza o algoritmo de particionamento para ordenar um vetor.
  */
 
@@ -243,7 +243,7 @@ Quick(imax* V, ci32 Start, ci32 End)
 
 /*
  * Função de Ordenação por contagem
- *  Counting Sort - Θ(n + s) = O = Ω
+ *  Counting Sort - Θ(n + s)
  * Utiliza um vetor auxiliar de contagem para reconstruir o vetor
  * de forma ordenada.
  */

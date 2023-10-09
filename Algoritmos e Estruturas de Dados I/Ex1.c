@@ -35,7 +35,7 @@ static void			 Insertion	(imax*, cu32, umax*);
 static void			 Quick		(imax*, ci32, ci32, umax*);
 
 /*
- * Função de Troca - Θ(1) = O = Ω
+ * Função de Troca - Θ(1)
  *  Swap
  * Troca os valores de V[i] e V[j].
  */
@@ -51,7 +51,7 @@ Swap(imax *V, cu32 i, cu32 j)
 }
 
 /*
- * Função de Cópia - Θ(1) = O = Ω
+ * Função de Cópia - Θ(1)
  *  Copy
  * Copia os elementos do vetor W para o vetor V.
  */
@@ -66,7 +66,7 @@ Copy(imax *V, imax *W, cu32 N)
 }
 
 /*
- * Função de Impressão Θ(1) = O = Ω
+ * Função de Impressão - Θ(1)
  *  Print
  * Imprime os elementos de um vetor V.
  */
@@ -87,7 +87,7 @@ Print(const wchar_t *Name, imax *V, cu32 N, cumax C)
 
 /*
  * Função de Ordenação por comparação
- *  Insertion Sort - O(n²) Ω(n) Θ(n²), in-place, estável
+ *  Insertion Sort - O(n²), melhor caso: O(n), in-place, estável
  * Empurra o elemento para trás até ficar ordenado.
  * Retorna o número total de comparações por dereferência.
  */
@@ -104,7 +104,7 @@ Insertion(imax *V, cu32 N, umax *C)
 
 /*
  * Função de Ordenação recursiva por comparação
- *  Quick Sort - O(n²) Ω(n lg n) Θ(n lg n), in-place
+ *  Quick Sort - O(n lg n), pior caso: O(n²), in-place
  * Utiliza o algoritmo de particionamento para ordenar um vetor.
  * Retorna o número total de comparações por dereferência.
  */

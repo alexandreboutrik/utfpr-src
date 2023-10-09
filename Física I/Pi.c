@@ -81,7 +81,6 @@ CalculateCollision(Block* B1, Block* B2)
 static void 
 PrintNCollision(const umax count)
 {
-
 	/* carriage return, retorna ao início da linha */
 	printf("\r");
 
