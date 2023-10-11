@@ -17,10 +17,12 @@
 
 #define		rimax		register	intmax_t
 #define		rumax		register	uintmax_t
+#define		cimax		const		intmax_t
 #define		cumax		const		uintmax_t
 
 #define		i32			int_fast32_t
 #define		u32			uint_fast32_t
+#define		i8			int_fast8_t
 
 #define		ri32		register	int_fast32_t
 #define		ru32		register	uint_fast32_t
@@ -30,6 +32,12 @@
 /*
  * Lista de Funções
  */
+
+static i8			 Linear		(imax*, cimax, cu32);
+static i8			 Binary		(imax*, cimax, cu32);
+
+static i8			 Linear_Rc	(imax*, cimax, cu32);
+static i8			 Binary_Rc	(imax*, cimax, cu32);
 
 static inline void	 Swap		(imax*, cu32, cu32);
 static inline void	 Copy		(imax*, imax*, cu32);
@@ -48,13 +56,101 @@ static void			 Bucket		(imax*, cu32);			/* NOT WORKING */
 static void			 Radix		(imax*, cu32, cumax);	/* NOT WORKING */
 
 /*
+ * Função de Busca - O(n), melhor caso: O(1)
+ *  Linear Search
+ * Compara cada elemento do vetor com X para verificar se X E V.
+ */
+
+static i8
+Linear(imax *V, cimax X, cu32 N)
+{
+	ru32 i;
+
+	for (i = 0; i < N; i++)
+		if (V[i] == X)
+			return 1;
+
+	return 0;
+}
+
+/*
+ * Função de Busca - O(lg n), melhor caso: O(1)
+ *  Binary Search
+ * Em um vetor já pré-ordenado, verifica se o X está no meio do vetor
+ * recursivamente.
+ */
+
+static i8
+Binary(imax *V, cimax X, cu32 N)
+{
+	ru32 Avg;
+	ru32 Start = 0, End = (N - 1);
+
+	while (Start <= End) {
+
+		Avg = (Start + End) / 2;
+
+		if (V[Avg] == X)
+			return 1;
+
+		if (V[Avg] > X)
+			End   = Avg - 1;
+		else
+			Start = Avg + 1;
+
+	}
+	
+	return 0;
+}
+
+/*
+ * Função de Busca recursiva - O(n), melhor caso: O(1)
+ *  Linear Search
+ * Compara cada elemento do vetor com X para verificar se X E V.
+ */
+
+static i8
+Linear_Rc(imax *V, cimax X, cu32 N)
+{
+	if (N == 0)
+		return 0;
+	
+	if (V[0] == X)
+		return 1;
+
+	return Linear_Rc(&(V[1]), X, N-1);
+}
+
+/*
+ * Função de Busca recursiva - O(lg n), melhor caso: O(1)
+ *  Binary Search
+ * Em um vetor já pré-ordenado, verifica se o X está no meio do vetor
+ * recursivamente.
+ */
+
+static i8
+Binary_Rc(imax *V, cimax X, cu32 N)
+{
+	if (N == 0)
+		return 0;
+
+	if (V[N >> 1] == X)
+		return 1;
+
+	if (V[N >> 1] < X)
+		return Binary_Rc(&(V[N/2+1]), X, (N >> 1) + 1);
+		
+	return Binary_Rc(&(V[0]), X, N >> 1);
+}
+
+/*
  * Função de Troca - Θ(1)
  *  Swap
  * Troca os valores de V[i] e V[j].
  */
 
 static inline void 
-Swap(imax* V, cu32 i, cu32 j)
+Swap(imax *V, cu32 i, cu32 j)
 {
 	imax Tmp;
 
@@ -85,7 +181,7 @@ Copy(imax *V, imax *W, cu32 N)
  */
 
 static inline void 
-Print(const wchar_t* Name, imax* V, cu32 N)
+Print(const wchar_t *Name, imax *V, cu32 N)
 {
 	ru32 i;
 
@@ -106,7 +202,7 @@ Print(const wchar_t* Name, imax* V, cu32 N)
  */
 
 static void 
-Bubble(imax* V, cu32 N)
+Bubble(imax *V, cu32 N)
 {
 	ru32 i, j;
 
@@ -123,7 +219,7 @@ Bubble(imax* V, cu32 N)
  */
 
 static void 
-Selection(imax* V, cu32 N) 
+Selection(imax *V, cu32 N) 
 {
 	ru32 i, j, p;
 
@@ -145,7 +241,7 @@ Selection(imax* V, cu32 N)
  */
 
 static void 
-Insertion(imax* V, cu32 N) 
+Insertion(imax *V, cu32 N) 
 {
 	ru32 i, j;
 
@@ -161,7 +257,7 @@ Insertion(imax* V, cu32 N)
  */
 
 static void 
-Merge(imax* R, imax* V, imax* W, cu32 Nv, cu32 Nw)
+Merge(imax *R, imax *V, imax *W, cu32 Nv, cu32 Nw)
 {
 	ru32 i, j, k;
 
@@ -197,7 +293,7 @@ Merge(imax* R, imax* V, imax* W, cu32 Nv, cu32 Nw)
  */
 
 static void 
-Merge_Sort(imax* R, imax* V, cu32 N)
+Merge_Sort(imax *R, imax *V, cu32 N)
 {
 	if (N == 1)
 		return;
@@ -215,7 +311,7 @@ Merge_Sort(imax* R, imax* V, cu32 N)
  */
 
 static void 
-Quick(imax* V, ci32 Start, ci32 End) 
+Quick(imax *V, ci32 Start, ci32 End) 
 {
 	if (Start >= End)
 		return;
@@ -327,6 +423,18 @@ main(void)
 	Counting	(&(C[0])	, N,	10);
 	Bucket		(&(K[0])	, 		N);
 	Radix		(&(D[0])	, N,	2);
+
+	printf(" Linear: %" PRIiFAST8 " - %" PRIiFAST8
+			  " | R: %" PRIiFAST8 " - %" PRIiFAST8 "\n",
+		Linear   (&(Vo[0]), 5, N), Linear   (&(Vo[0]), 11, N),
+		Linear_Rc(&(Vo[0]), 5, N), Linear_Rc(&(Vo[0]), 11, N));
+
+	printf(" Binary: %" PRIiFAST8 " - %" PRIiFAST8
+			  " | R: %" PRIiFAST8 " - %" PRIiFAST8 "\n",
+		Binary   (&(Vo[0]), 5, N), Binary   (&(Vo[0]), 11, N),
+		Binary_Rc(&(Vo[0]), 5, N), Binary_Rc(&(Vo[0]), 11, N));
+
+	printf("\n");
 
 	Print		(L"Bubble    ", &(B[0]),	N);
 	Print		(L"Selection ", &(S[0]),	N);
