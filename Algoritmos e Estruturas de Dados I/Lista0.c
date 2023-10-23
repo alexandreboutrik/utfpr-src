@@ -12,46 +12,46 @@
 #include <stdlib.h>
 #include <wchar.h>
 
-#define		imax		intmax_t
-#define		i32			int_fast32_t
-#define		i8			int_fast8_t
+#define     S16     wchar_t
 
-#define		umax		uintmax_t
-#define		u16			uint_fast16_t
-#define		u8			uint_fast8_t
+#define     IX      intmax_t
+#define     I32     int_fast32_t
+#define     I8      int_fast8_t
 
-#define		cimax		const		intmax_t
-#define		cumax		const		uintmax_t
+#define     UX      uintmax_t
+#define     U16     uint_fast16_t
+#define     U8      uint_fast8_t
+#define     U0      void
 
-#define		ri32		register	int_fast32_t
-#define		ru16		register	uint_fast16_t
-#define		ru8			register	uint_fast8_t
-#define		cu16		const		uint_fast16_t
-#define		cu8			const		uint_fast8_t
+#define     F32     float
 
-#define		f32			float
+#define     Fn      static
+#define     Reg     register
+#define     Cst     const
 
 /*
  * Lista de Exercícios
  */
 
-void	 HelloWorld		(void);					/* Ex 01 */
+Fn  U0      HelloWorld  (void);                     /* Ex 01 */
 
-u8		 Triangle		(cumax, cumax, cumax);	/* Ex 02 */
-void	 Average		(void);					/* Ex 03 */
-i8		 Square			(cu8);					/* Ex 04 */
-void	 Dynamic		(i32);					/* Ex 05 */
-u16		 StrLen			(const wchar_t*);		/* Ex 07 */
+Fn  U8      Triangle    (Cst UX, Cst UX, Cst UX);   /* Ex 02 */
+Fn  U0      Average     (void);                     /* Ex 03 */
+Fn  I8      Square      (Cst U8);                   /* Ex 04 */
+Fn  U0      Dynamic     (I32);                      /* Ex 05 */
+Fn  U16     StrLen      (Cst S16*);                 /* Ex 07 */
 
-u8		 Linear_Search	(imax*, cu16, cimax);	/* Ex 12 */
+Fn  U8      Linear      (IX*, Cst U16, Cst IX);     /* Ex 12 */
 
 /*
  * Exercício 01
  * Imprime Hello World!
  */
 
-void HelloWorld(void) {
-	printf("Hello World!\n");
+Fn U0
+HelloWorld(void)
+{
+    printf("Hello World!\n");
 }
 
 /*
@@ -60,13 +60,13 @@ void HelloWorld(void) {
  * A, B e C. Retorna 0 caso contrário.
  */
 
-u8 Triangle(cumax A, cumax B, cumax C) {
+Fn U8 
+Triangle(Cst UX A, Cst UX B, Cst UX C)
+{
+    if ((A < (B + C)) && (B < (A + C)) && (C < (A + B)))
+        return 1;
 
-	if ((A < (B + C)) && (B < (A + C)) && (C < (A + B)))
-		return 1;
-
-	return 0;
-
+    return 0;
 }
 
 /*
@@ -77,22 +77,22 @@ u8 Triangle(cumax A, cumax B, cumax C) {
  * casas decimais.
  */
 
-void Average(void) {
+Fn U0
+Average(void) 
+{
+    IX Sum, Input, N;
 
-	imax Sum, Input, N;
+    for (Sum = 0, Input = 0, N = -1; Input != -1; N++) {
 
-	for (Sum = 0, Input = 0, N = -1; Input != -1; N++) {
+        scanf("%" PRIiMAX, &Input);
+        Sum += Input;
 
-		scanf("%" PRIiMAX, &Input);
-		Sum += Input;
+    }
 
-	}
+    /* Pois o último Input foi -1 */
+    Sum++;
 
-	/* Pois o último Input foi -1 */
-	Sum++;
-
-	printf("Média: %.2f\n", ((f32) Sum / (f32) N));
-
+    printf("Média: %.2f\n", ((F32) Sum / (F32) N));
 }
 
 /*
@@ -104,32 +104,32 @@ void Average(void) {
  * Se N for par, retorna -1 sinalizando um erro.
  */
 
-i8 Square(cu8 N) {
+Fn I8 
+Square(Cst U8 N) 
+{
+    Reg U8 l, c;
 
-	ru8 l, c;
+    if (N % 2 == 0)
+        return -1;
 
-	if (N % 2 == 0)
-		return -1;
+    /* Percorre as linhas */
+    for (l = 0; l < N; l++) {
 
-	/* Percorre as linhas */
-	for (l = 0; l < N; l++) {
+        /* Percorre as colunas */
+        for (c = 0; c < N; c++) {
 
-		/* Percorre as colunas */
-		for (c = 0; c < N; c++) {
+            if (c == l || c == N-l-1)
+                printf("x");
+            else
+                printf(".");
 
-			if (c == l || c == N-l-1)
-				printf("x");
-			else
-				printf(".");
+        }
+    
+        printf("\n");
 
-		}
-	
-		printf("\n");
+    }
 
-	}
-
-	return 0;
-
+    return 0;
 }
 
 /*
@@ -138,26 +138,26 @@ i8 Square(cu8 N) {
  * Em seguida, imprima a soma dos elementos do vetor.
  */
 
-void Dynamic(i32 N) {
+Fn U0
+Dynamic(I32 N) 
+{
+    IX *Vetor;
+    IX  Sum;
 
-	imax *Vetor;
-	imax  Sum;
+    Reg I32 i;
 
-	ri32   i;
+    if ((Vetor = (IX *) malloc(N * sizeof(IX))) == NULL)
+        err(errno, "malloc");
 
-	if ((Vetor = (imax *) malloc(N * sizeof(imax))) == NULL)
-		err(errno, "malloc");
+    for (i = 0; i < N; i++)
+        scanf("%" SCNiMAX, &(Vetor[i]));
 
-	for (i = 0; i < N; i++)
-		scanf("%" SCNiMAX, &(Vetor[i]));
+    for (N--; N >= 0; N--)
+        Sum += Vetor[N];
 
-	for (N--; N >= 0; N--)
-		Sum += Vetor[N];
+    printf("%" PRIiMAX "\n", Sum);
 
-	printf("%" PRIiMAX "\n", Sum);
-
-	free(Vetor);
-
+    free(Vetor);
 }
 
 /*
@@ -165,14 +165,14 @@ void Dynamic(i32 N) {
  * Retorna a quantidade de letras de uma String.
  */
 
-u16 StrLen(const wchar_t* String) {
+Fn U16 
+StrLen(Cst S16* String) 
+{
+    Reg U16 i;
 
-	ru16 i;
+    for (i = 0; String[i] != '\0'; i++);
 
-	for (i = 0; String[i] != '\0'; i++);
-
-	return i;
-
+    return i;
 }
 
 /*
@@ -181,23 +181,23 @@ u16 StrLen(const wchar_t* String) {
  * Retorna 0 caso contrário.
  */
 
-u8 Linear_Search(imax *V, cu16 N, cimax X) {
+Fn U8
+Linear(IX *V, Cst U16 N, Cst IX X) 
+{
+    Reg U16 i;
 
-	ru16 i;
+    for (i = 0; i < N; i++)
+        if (V[i] == X)
+            return 1;
 
-	for (i = 0; i < N; i++)
-		if (V[i] == X)
-			return 1;
-
-	return 0;
-
+    return 0;
 }
 
-int main(int argc, const char* argv[]) {
+int 
+main(int argc, const char* argv[]) 
+{
+    (void) argc; (void) argv;
 
-	(void) argc; (void) argv;
-
-	return 0;
-
+    return 0;
 }
 

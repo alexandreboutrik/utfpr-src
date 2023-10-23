@@ -12,186 +12,184 @@
 #include <stdlib.h>
 #include <wchar.h>
 
-#define		imax		intmax_t
-#define		umax		uintmax_t
+#define     S16     wchar_t
 
-#define		rimax		register	intmax_t
-#define		rumax		register	uintmax_t
-#define		cimax		const		intmax_t
-#define		cumax		const		uintmax_t
+#define     IX      intmax_t
+#define     I32     int_fast32_t
+#define     I8      int_fast8_t
 
-#define		i32			int_fast32_t
-#define		u32			uint_fast32_t
-#define		i8			int_fast8_t
+#define     UX      uintmax_t
+#define     U32     uint_fast32_t
+#define     U0      void
 
-#define		ri32		register	int_fast32_t
-#define		ru32		register	uint_fast32_t
-#define		ci32		const		int_fast32_t
-#define		cu32		const		uint_fast32_t
+#define     Fn      static
+#define     In      inline
+#define     Reg     register
+#define     Cst     const
 
 /*
  * Lista de Funções
  */
 
-static i8			 Linear		(imax*, cimax, cu32);
-static i8			 Binary		(imax*, cimax, cu32);
+Fn  I8      Linear      (IX*, Cst IX, Cst U32);
+Fn  I8      Binary      (IX*, Cst IX, Cst U32);
 
-static i8			 Linear_Rc	(imax*, cimax, cu32);
-static i8			 Binary_Rc	(imax*, cimax, cu32);
+Fn  I8      Linear_R    (IX*, Cst IX, Cst U32);
+Fn  I8      Binary_R    (IX*, Cst IX, Cst U32);
 
-static inline void	 Swap		(imax*, cu32, cu32);
-static inline void	 Copy		(imax*, imax*, cu32);
-static inline void	 Print		(const wchar_t*, imax*, cu32);
+Fn  In U0   Swap        (IX*, Cst U32, Cst U32);
+Fn  In U0   Copy        (IX*, IX*, Cst U32);
+Fn  In U0   Print       (Cst S16*, IX*, Cst U32);
 
-static void			 Bubble		(imax*, u32);
-static void			 Selection	(imax*, u32);
-static void			 Insertion	(imax*, cu32);
+Fn  U0      Bubble      (IX*, Cst U32);
+Fn  U0      Selection   (IX*, Cst U32);
+Fn  U0      Insertion   (IX*, Cst U32);
 
-static void			 Merge		(imax*, imax*, imax*, cu32, cu32);
-static void			 Merge_Sort	(imax*, imax*, cu32);	/* NOT WORKING */
-static void			 Quick		(imax*, ci32, ci32);
+Fn  U0      Merge       (IX*, IX*, IX*, Cst U32, Cst U32);
+Fn  U0      Merge_Sort  (IX*, IX*, Cst U32);        /* NOT WORKING */
+Fn  U0      Quick       (IX*, Cst I32, Cst I32);
 
-static void			 Counting	(imax*, u32, cumax);
-static void			 Bucket		(imax*, cu32);			/* NOT WORKING */
-static void			 Radix		(imax*, cu32, cumax);	/* NOT WORKING */
+Fn  U0      Counting    (IX*, U32, Cst UX);
+Fn  U0      Bucket      (IX*, Cst U32);             /* NOT WORKING */
+Fn  U0      Radix       (IX*, Cst U32, Cst UX);     /* NOT WORKING */
 
 /*
- * Função de Busca - O(n), melhor caso: O(1)
- *  Linear Search
+ * Função de Busca
+ *  Linear Search - O(n), melhor caso: O(1)
  * Compara cada elemento do vetor com X para verificar se X E V.
  */
 
-static i8
-Linear(imax *V, cimax X, cu32 N)
+Fn I8
+Linear(IX *V, Cst IX X, Cst U32 N)
 {
-	ru32 i;
+    Reg U32 i;
 
-	for (i = 0; i < N; i++)
-		if (V[i] == X)
-			return 1;
+    for (i = 0; i < N; i++)
+        if (V[i] == X)
+            return 1;
 
-	return 0;
+    return 0;
 }
 
 /*
- * Função de Busca - O(lg n), melhor caso: O(1)
- *  Binary Search
+ * Função de Busca
+ *  Binary Search - O(lg n), melhor caso: O(1)
  * Em um vetor já pré-ordenado, verifica se o X está no meio do vetor
  * recursivamente.
  */
 
-static i8
-Binary(imax *V, cimax X, cu32 N)
+Fn I8
+Binary(IX *V, Cst IX X, Cst U32 N)
 {
-	ru32 Avg;
-	ru32 Start = 0, End = (N - 1);
+    Reg U32 Avg;
+    Reg U32 Start = 0, End = (N - 1);
 
-	while (Start <= End) {
+    while (Start <= End) {
 
-		Avg = (Start + End) / 2;
+        Avg = (Start + End) / 2;
 
-		if (V[Avg] == X)
-			return 1;
+        if (V[Avg] == X)
+            return 1;
 
-		if (V[Avg] > X)
-			End   = Avg - 1;
-		else
-			Start = Avg + 1;
+        if (V[Avg] > X)
+            End   = Avg - 1;
+        else
+            Start = Avg + 1;
 
-	}
-	
-	return 0;
+    }
+    
+    return 0;
 }
 
 /*
- * Função de Busca recursiva - O(n), melhor caso: O(1)
- *  Linear Search
+ * Função de Busca recursiva
+ *  Linear Search - O(n), melhor caso: O(1)
  * Compara cada elemento do vetor com X para verificar se X E V.
  */
 
-static i8
-Linear_Rc(imax *V, cimax X, cu32 N)
+Fn I8
+Linear_R(IX *V, Cst IX X, Cst U32 N)
 {
-	if (N == 0)
-		return 0;
-	
-	if (V[0] == X)
-		return 1;
+    if (N == 0)
+        return 0;
+    
+    if (V[0] == X)
+        return 1;
 
-	return Linear_Rc(&(V[1]), X, N-1);
+    return Linear_R(&(V[1]), X, N-1);
 }
 
 /*
- * Função de Busca recursiva - O(lg n), melhor caso: O(1)
- *  Binary Search
+ * Função de Busca recursiva
+ *  Binary Search - O(lg n), melhor caso: O(1)
  * Em um vetor já pré-ordenado, verifica se o X está no meio do vetor
  * recursivamente.
  */
 
-static i8
-Binary_Rc(imax *V, cimax X, cu32 N)
+Fn I8
+Binary_R(IX *V, Cst IX X, Cst U32 N)
 {
-	if (N == 0)
-		return 0;
+    if (N == 0)
+        return 0;
 
-	if (V[N >> 1] == X)
-		return 1;
+    if (V[N >> 1] == X)
+        return 1;
 
-	if (V[N >> 1] < X)
-		return Binary_Rc(&(V[N/2+1]), X, (N >> 1) + 1);
-		
-	return Binary_Rc(&(V[0]), X, N >> 1);
+    if (V[N >> 1] < X)
+        return Binary_R(&(V[N/2+1]), X, (N >> 1) + 1);
+        
+    return Binary_R(&(V[0]), X, N >> 1);
 }
 
 /*
- * Função de Troca - Θ(1)
- *  Swap
+ * Função de Troca
+ *  Swap - Θ(1)
  * Troca os valores de V[i] e V[j].
  */
 
-static inline void 
-Swap(imax *V, cu32 i, cu32 j)
+Fn In U0
+Swap(IX *V, Cst U32 i, Cst U32 j)
 {
-	imax Tmp;
+    IX Tmp;
 
-	Tmp  = V[i];
-	V[i] = V[j];
-	V[j] = Tmp;
+    Tmp  = V[i];
+    V[i] = V[j];
+    V[j] = Tmp;
 }
 
 /*
- * Função de Cópia - Θ(1)
- *  Copy
+ * Função de Cópia
+ *  Copy - Θ(1)
  * Copia os elementos do vetor W para o vetor V.
  */
 
-static inline void 
-Copy(imax *V, imax *W, cu32 N)
+Fn In U0
+Copy(IX *V, IX *W, Cst U32 N)
 {
-	ru32 i;
+    Reg U32 i;
 
-	for (i = 0; i < N; i++)
-		V[i] = W[i];
+    for (i = 0; i < N; i++)
+        V[i] = W[i];
 }
 
 /*
- * Função de Impressão - Θ(1)
- *  Print
+ * Função de Impressão
+ *  Print - Θ(1)
  * Função que imprime um vetor V.
  */
 
-static inline void 
-Print(const wchar_t *Name, imax *V, cu32 N)
+Fn In U0
+Print(Cst S16 *Name, IX *V, Cst U32 N)
 {
-	ru32 i;
+    Reg U32 i;
 
-	if (Name != NULL)
-		printf(" %ls:", Name);
+    if (Name != NULL)
+        printf(" %ls:", Name);
 
-	for (i = 0; i < N; i++)
-		printf(" %" PRIiMAX, V[i]);
+    for (i = 0; i < N; i++)
+        printf(" %" PRIiMAX, V[i]);
 
-	printf("\n");
+    printf("\n");
 }
 
 /*
@@ -201,15 +199,15 @@ Print(const wchar_t *Name, imax *V, cu32 N)
  * vetor.
  */
 
-static void 
-Bubble(imax *V, cu32 N)
+Fn U0
+Bubble(IX *V, Cst U32 N)
 {
-	ru32 i, j;
+    Reg U32 i, j;
 
-	for (i = 0; i < N; i++)
-		for (j = 0; j < N; j++)
-			if (V[i] < V[j])
-				Swap(&(V[0]), i, j);
+    for (i = 0; i < N; i++)
+        for (j = i; j < N; j++)
+            if (V[i] > V[j])
+                Swap(&(V[0]), i, j);
 }
 
 /*
@@ -218,20 +216,19 @@ Bubble(imax *V, cu32 N)
  * Encontra o menor elemento do vetor e coloca na posição inicial.
  */
 
-static void 
-Selection(imax *V, cu32 N) 
+Fn U0
+Selection(IX *V, Cst U32 N) 
 {
-	ru32 i, j, p;
+    Reg U32 i, j, p;
 
-	for (i = 0; i < N; i++) {
+    for (i = 0; i < N; i++)
+    {
+        for (p = i, j = (i + 1); j < N; j++)
+            if (V[j] < V[p])
+                p = j;
 
-		for (p = i, j = (i + 1); j < N; j++)
-			if (V[j] < V[p])
-				p = j;
-
-		Swap(&(V[0]), i, p);
-
-	}
+        Swap(&(V[0]), i, p);
+    }
 }
 
 /*
@@ -240,14 +237,14 @@ Selection(imax *V, cu32 N)
  * Empurra o elemento para trás até ficar ordenado.
  */
 
-static void 
-Insertion(imax *V, cu32 N) 
+Fn U0
+Insertion(IX *V, Cst U32 N) 
 {
-	ru32 i, j;
+    Reg U32 i, j;
 
-	for (i = 0; i < N; i++)
-		for (j = i; (j > 0) && (V[j] < V[j-1]); j--)
-			Swap(&(V[0]), j, j-1);
+    for (i = 0; i < N; i++)
+        for (j = i; (j > 0) && (V[j] < V[j-1]); j--)
+            Swap(&(V[0]), j, j-1);
 }
 
 /*
@@ -256,34 +253,31 @@ Insertion(imax *V, cu32 N)
  * Junta dois vetores já pré-ordenados.
  */
 
-static void 
-Merge(imax *R, imax *V, imax *W, cu32 Nv, cu32 Nw)
+Fn U0
+Merge(IX *R, IX *V, IX *W, Cst U32 Nv, Cst U32 Nw)
 {
-	ru32 i, j, k;
+    Reg U32 i, j, k;
 
-	for (i = 0, j = 0, k = 0; (i < Nv) && (j < Nw); k++) {
+    for (i = 0, j = 0, k = 0; (i < Nv) && (j < Nw); k++) 
+    {
+        if (V[i] <= W[j])
+        {
+            R[k] = V[i]; 
+            i++;
+        }
 
-		if (V[i] <= W[j]) {
+        else
+        {
+            R[k] = W[j];
+            j++;
+        }
+    }
 
-			R[k] = V[i]; 
-			i++;
+    for (; i < Nv; i++, k++)
+        R[k] = V[i];
 
-		}
-
-		else {
-
-			R[k] = W[j];
-			j++;
-
-		}
-
-	}
-
-	for (; i < Nv; i++, k++)
-		R[k] = V[i];
-
-	for (; j < Nw; j++, k++)
-		R[k] = W[j];
+    for (; j < Nw; j++, k++)
+        R[k] = W[j];
 }
 
 /*
@@ -292,16 +286,16 @@ Merge(imax *R, imax *V, imax *W, cu32 Nv, cu32 Nw)
  * Utiliza o algoritmo merge para ordenar um vetor.
  */
 
-static void 
-Merge_Sort(imax *R, imax *V, cu32 N)
+Fn U0
+Merge_Sort(IX *R, IX *V, Cst U32 N)
 {
-	if (N == 1)
-		return;
+    if (N == 1)
+        return;
 
-	Merge_Sort(&(R[0]), &(V[0]),   N/2);
-	Merge_Sort(&(R[0]), &(V[N/2]), N/2);
+    Merge_Sort(&(R[0]), &(V[0]),   N/2);
+    Merge_Sort(&(R[0]), &(V[N/2]), N/2);
 
-	Merge(&(R[0]), &(V[0]), &(V[N/2]), N/2, N/2);
+    Merge(&(R[0]), &(V[0]), &(V[N/2]), N/2, N/2);
 }
 
 /*
@@ -310,31 +304,29 @@ Merge_Sort(imax *R, imax *V, cu32 N)
  * Utiliza o algoritmo de particionamento para ordenar um vetor.
  */
 
-static void 
-Quick(imax *V, ci32 Start, ci32 End) 
+Fn U0
+Quick(IX *V, Cst I32 Start, Cst I32 End) 
 {
-	if (Start >= End)
-		return;
+    if (Start >= End)
+        return;
 
-	imax Pivot	= V[Start];
-	u32  m		= Start;
-	ri32 i;
+    IX      Pivot  = V[Start];
+    U32     m      = Start;
+    Reg I32 i;
 
-	for (i = (m + 1); i <= End; i++) {
+    for (i = (m + 1); i <= End; i++)
+    {
+        if (V[i] < Pivot)
+        {
+            Swap(&(V[0]), i, m+1);
+            m++;
+        }
+    }
 
-		if (V[i] < Pivot) {
+    Swap (&(V[0]), Start, m);
 
-			Swap(&(V[0]), i, m+1);
-			m++;
-
-		}
-
-	}
-
-	Swap (&(V[0]), Start, m);
-
-	Quick(&(V[0]), Start, m-1);
-	Quick(&(V[0]), m+1  , End);
+    Quick(&(V[0]), Start, m-1);
+    Quick(&(V[0]), m+1  , End);
 }
 
 /*
@@ -344,24 +336,24 @@ Quick(imax *V, ci32 Start, ci32 End)
  * de forma ordenada.
  */
 
-static void 
-Counting(imax *V, u32 N, cumax M)
+Fn U0
+Counting(IX *V, U32 N, Cst UX M)
 {
-	imax  *C;
-	rumax  i;
-	rimax  j;
+    IX      *C;
+    Reg UX   i;
+    Reg IX   j;
 
-	if ((C = (imax *) calloc(M+1, sizeof(imax))) == NULL)
-		err(errno, "calloc");
+    if ((C = (IX *) calloc(M+1, sizeof(IX))) == NULL)
+        err(errno, "calloc");
 
-	for (i = 0; i < N; i++)
-		C[V[i]]++;
+    for (i = 0; i < N; i++)
+        C[V[i]]++;
 
-	for (i = 0, N = 0; i < M; i++)
-		for (j = 0; j < C[i]; j++)
-			V[N++] = i;
+    for (i = 0, N = 0; i < M; i++)
+        for (j = 0; j < C[i]; j++)
+            V[N++] = i;
 
-	free(C);
+    free(C);
 }
 
 /*
@@ -371,10 +363,10 @@ Counting(imax *V, u32 N, cumax M)
  * reconstruir o vetor de forma ordenada.
  */
 
-static void 
-Bucket(imax *V, cu32 N)
+Fn U0
+Bucket(IX *V, Cst U32 N)
 {
-	(void) V; (void) N;
+    (void) V; (void) N;
 }
 
 /*
@@ -383,76 +375,75 @@ Bucket(imax *V, cu32 N)
  * Ordena um vetor por dígito significativo utilizando o Bucket sort.
  */
 
-static void 
-Radix(imax *V, cu32 N, cumax D) 
+Fn U0
+Radix(IX *V, Cst U32 N, Cst UX D) 
 {
-	(void) V; (void) N; (void) D;
+    (void) V; (void) N; (void) D;
 }
 
 int 
 main(void) 
 {
-	imax  B[] 	 = { 5, 8, 9, 1, 3, 2, 1, 0, 8 };
-	imax  S[] 	 = { 5, 8, 9, 1, 3, 2, 1, 0, 8 };
-	imax  I[] 	 = { 5, 8, 9, 1, 3, 2, 1, 0, 8 };
+    IX  B[]    = { 5, 8, 9, 1, 3, 2, 1, 0, 8 };
+    IX  S[]    = { 5, 8, 9, 1, 3, 2, 1, 0, 8 };
+    IX  I[]    = { 5, 8, 9, 1, 3, 2, 1, 0, 8 };
 
-	imax  M[] 	 = { 5, 8, 9, 1, 3, 2, 1, 0, 8 };
-	imax  Q[] 	 = { 5, 8, 9, 1, 3, 2, 1, 0, 8 };
-	imax  H[] 	 = { 5, 8, 9, 1, 3, 2, 1, 0, 8 };
-	
-	imax  C[] 	 = { 5, 8, 9, 1, 3, 2, 1, 0, 8 };
-	imax  K[] 	 = { 5, 8, 9, 1, 3, 2, 1, 0, 8 };
-	imax  D[] 	 = { 5, 8, 9, 1, 3, 2, 1, 0, 8 };
+    IX  M[]    = { 5, 8, 9, 1, 3, 2, 1, 0, 8 };
+    IX  Q[]    = { 5, 8, 9, 1, 3, 2, 1, 0, 8 };
+    
+    IX  C[]    = { 5, 8, 9, 1, 3, 2, 1, 0, 8 };
+    IX  K[]    = { 5, 8, 9, 1, 3, 2, 1, 0, 8 };
+    IX  D[]    = { 5, 8, 9, 1, 3, 2, 1, 0, 8 };
 
-	imax  Vo[]	 = { 1, 2, 3, 4, 5, 6, 1, 0, 8 };
+    IX  Vo[]   = { 1, 2, 3, 4, 5, 6, 1, 0, 8 };
 
-	cu32  N		 = 9;
-	
-	imax *R;
+    Cst U32 N = 9;
+    
+    IX *R;
 
-	if ((R = (imax *) calloc(N, sizeof(imax))) == NULL)
-		err(errno, "calloc");
+    if ((R = (IX *) calloc(N, sizeof(IX))) == NULL)
+        err(errno, "calloc");
 
-	Bubble		(&(B[0])	,		N);
-	Selection	(&(S[0])	,		N);
-	Insertion	(&(I[0])	,		N);
+    Bubble      (&(B[0])    ,       N);
+    Selection   (&(S[0])    ,       N);
+    Insertion   (&(I[0])    ,       N);
 
-	Merge_Sort	(&(R[0])	, &(M[0]),	N);
-	Quick		(&(Q[0])	, 0,	N-1);
+    Merge_Sort  (&(R[0])    , &(M[0]),  N);
+    Quick       (&(Q[0])    , 0,   N-1);
 
-	Counting	(&(C[0])	, N,	10);
-	Bucket		(&(K[0])	, 		N);
-	Radix		(&(D[0])	, N,	2);
+    Counting    (&(C[0])    , N,    10);
+    Bucket      (&(K[0])    ,       N);
+    Radix       (&(D[0])    , N,    2);
 
-	printf(" Linear: %" PRIiFAST8 " - %" PRIiFAST8
-			  " | R: %" PRIiFAST8 " - %" PRIiFAST8 "\n",
-		Linear   (&(Vo[0]), 5, N), Linear   (&(Vo[0]), 11, N),
-		Linear_Rc(&(Vo[0]), 5, N), Linear_Rc(&(Vo[0]), 11, N));
+    printf(" Linear: %" PRIiFAST8 " - %" PRIiFAST8
+              " | R: %" PRIiFAST8 " - %" PRIiFAST8 "\n",
+        Linear  (&(Vo[0]), 5, N), Linear  (&(Vo[0]), 11, N),
+        Linear_R(&(Vo[0]), 5, N), Linear_R(&(Vo[0]), 11, N));
 
-	printf(" Binary: %" PRIiFAST8 " - %" PRIiFAST8
-			  " | R: %" PRIiFAST8 " - %" PRIiFAST8 "\n",
-		Binary   (&(Vo[0]), 5, N), Binary   (&(Vo[0]), 11, N),
-		Binary_Rc(&(Vo[0]), 5, N), Binary_Rc(&(Vo[0]), 11, N));
+    printf(" Binary: %" PRIiFAST8 " - %" PRIiFAST8
+              " | R: %" PRIiFAST8 " - %" PRIiFAST8 "\n",
+        Binary  (&(Vo[0]), 5, N), Binary  (&(Vo[0]), 11, N),
+        Binary_R(&(Vo[0]), 5, N), Binary_R(&(Vo[0]), 11, N));
 
-	printf("\n");
+    printf("\n");
 
-	Print		(L"Bubble    ", &(B[0]),	N);
-	Print		(L"Selection ", &(S[0]),	N);
-	Print		(L"Insertion ", &(I[0]),	N);
+    Print       (L"Bubble    ", &(B[0]),    N);
+    Print       (L"Selection ", &(S[0]),    N);
+    Print       (L"Insertion ", &(I[0]),    N);
 
-	printf("\n");
+    printf("\n");
 
-	Print		(L"Merge     ", &(R[0]),	N);
-	Print		(L"Quick     ", &(Q[0]),	N);
+    Print       (L"Merge     ", &(R[0]),    N);
+    Print       (L"Quick     ", &(Q[0]),    N);
 
-	printf("\n");
+    printf("\n");
 
-	Print		(L"Counting  ", &(C[0]),	N);
-	Print		(L"Bucket    ", &(K[0]),	N);
-	Print		(L"Radix     ", &(D[0]),	N);
+    Print       (L"Counting  ", &(C[0]),    N);
+    Print       (L"Bucket    ", &(K[0]),    N);
+    Print       (L"Radix     ", &(D[0]),    N);
 
-	free(R);
+    free(R);
 
-	return 0;
+    return 0;
 }
 
