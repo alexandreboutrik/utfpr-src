@@ -82,11 +82,10 @@ Average(void)
 {
     IX Sum, Input, N;
 
-    for (Sum = 0, Input = 0, N = -1; Input != -1; N++) {
-
+    for (Sum = 0, Input = 0, N = -1; Input != -1; N++)
+    {
         scanf("%" PRIiMAX, &Input);
         Sum += Input;
-
     }
 
     /* Pois o último Input foi -1 */
@@ -113,20 +112,18 @@ Square(Cst U8 N)
         return -1;
 
     /* Percorre as linhas */
-    for (l = 0; l < N; l++) {
-
+    for (l = 0; l < N; l++)
+    {
         /* Percorre as colunas */
-        for (c = 0; c < N; c++) {
-
+        for (c = 0; c < N; c++)
+        {
             if (c == l || c == N-l-1)
                 printf("x");
             else
                 printf(".");
-
         }
     
         printf("\n");
-
     }
 
     return 0;
